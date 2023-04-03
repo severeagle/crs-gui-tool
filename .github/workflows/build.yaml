@@ -39,6 +39,12 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: powershell
     
+    - name: Print working directory
+      run: pwd
+
+    - name: List directory contents
+      run: ls
+    
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
