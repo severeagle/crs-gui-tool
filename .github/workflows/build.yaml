@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build standalone binary
+      run: |
+        pyinstaller --name=myapp --onefile --windowed main.py
+      if: matrix.os == 'windows-latest'
+
+    - name: Zip standalone binary
+      uses: montudor/action-zip@v0.1.0
+      with:
+        args: 'myapp dist'
+      if: matrix.os == 'windows-latest'
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: myapp
+        path: |
+          dist/myapp
+          myapp.zip
+      if: matrix.os == 'windows-latest'
