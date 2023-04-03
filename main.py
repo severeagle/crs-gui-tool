@@ -65,7 +65,7 @@ class CoordsTransformApp(tk.Tk):
                 longitude = tk.Radiobutton(self.lower_frame, variable=self.check_var_long,width=2,value=col).grid(row=i+1,column=1)
                 latitude = tk.Radiobutton(self.lower_frame, variable=self.check_var_lat,width=2,value=col).grid(row=i+1,column=2)
         else:
-            print("Failed")
+            print("Failed!")
 
     def main(self):
         self.mainloop()
