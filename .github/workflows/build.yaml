@@ -35,7 +35,7 @@ jobs:
 
     - name: Create zip archive
       run: |
-        zip -r myapp.zip myapp
+        zip myapp.zip myapp
       if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
 
     - name: Upload artifacts
@@ -43,5 +43,5 @@ jobs:
       with:
         name: myapp
         path: |
-          dist/myapp
-          dist/myapp.zip
+          myapp
+          myapp.zip
