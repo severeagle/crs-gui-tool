@@ -43,7 +43,7 @@ jobs:
       run: pwd
 
     - name: List directory contents
-      run: ls
+      run: ls build; ls dist
     
     - name: Create Release
       id: create_release
