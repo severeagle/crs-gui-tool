@@ -57,14 +57,6 @@ jobs:
           exit 1
         }
       if: matrix.os == 'windows-latest'
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: crs_transform
-        path: |
-          crs_transform_ubuntu.zip
-          crs_transform_windows.zip
     
     - name: Create Release
       uses: actions/create-release@v1
@@ -77,4 +69,16 @@ jobs:
           This is the first release of myapp.
         draft: false
         prerelease: false
+    
+    - name: Upload Linux Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: crs_transform_ubuntu
+        path: crs_transform_ubuntu.zip
+
+    - name: Upload Windows Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: crs_transform_windows
+        path: crs_transform_windows.zip
     
