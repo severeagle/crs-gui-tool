@@ -30,18 +30,18 @@ jobs:
 
     - name: Build standalone binary
       run: |
-        pyinstaller --name=myapp --onefile --windowed main.py
+        pyinstaller --name=crs_gui --onefile --windowed main.py
       if: matrix.os == 'windows-latest'
 
     - name: Create zip archive
       run: |
-        zip myapp.zip myapp
+        zip -r crs_gui.zip dist
       if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: myapp
+        name: crs_gui
         path: |
-          myapp
-          myapp.zip
+          dist/crs_gui
+          crs_gui.zip
