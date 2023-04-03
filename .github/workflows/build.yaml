@@ -39,21 +39,14 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: powershell
     
-    - name: Print working directory
-      run: pwd
-
-    - name: List directory contents
-      run: ls; ls build; ls dist
-      if: matrix.os == 'windows-latest'
-    
-    - name: Create Release
-      id: create_release
+    - name: Create Ubuntu Release
+      id: create_ubuntu_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.PUB_TOKEN }}
       with:
-        tag_name: v1.0.0
-        release_name: Release v1.0.0
+        tag_name: v1.0.0-ubuntu
+        release_name: Release v1.0.0-ubuntu
         body: |
           This is the first release of myapp.
         draft: false
@@ -64,19 +57,31 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create_ubuntu_release.outputs.upload_url }}
         asset_path: dist/crs_transform_linux
         asset_name: crs_transform_linux
         asset_content_type: application/octet-stream
       if: matrix.os == 'ubuntu-latest'
     
+    - name: Create Windows Release
+      id: create_win_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PUB_TOKEN }}
+      with:
+        tag_name: v1.0.0-win
+        release_name: Release v1.0.0-win
+        body: |
+          This is the first release of myapp.
+        draft: false
+        prerelease: false
 
     - name: Upload Windows Binary
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.PUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create_win_release.outputs.upload_url }}
         asset_path: dist/crs_transform_win.exe
         asset_name: crs_transform_win.exe
         asset_content_type: application/octet-stream
