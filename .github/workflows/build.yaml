@@ -67,6 +67,7 @@ jobs:
         asset_path: dist/crs_transform_linux
         asset_name: crs_transform_linux
         asset_content_type: application/octet-stream
+        if: matrix.os == 'ubuntu-latest'
     
 
     - name: Upload Windows Binary
@@ -78,3 +79,4 @@ jobs:
         asset_path: dist/crs_transform_win.exe
         asset_name: crs_transform_win.exe
         asset_content_type: application/octet-stream
+        if: matrix.os == 'windows-latest'
