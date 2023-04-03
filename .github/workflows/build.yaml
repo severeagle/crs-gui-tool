@@ -35,10 +35,7 @@ jobs:
 
     - name: Create zip archive
       run: |
-        mkdir -p dist
-        cd dist
         zip -r myapp.zip myapp
-        cd ..
       if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
 
     - name: Upload artifacts
