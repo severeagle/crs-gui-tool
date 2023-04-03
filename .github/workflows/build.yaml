@@ -28,15 +28,35 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build standalone binary
+    - name: Build standalone binary for Ubuntu
       run: |
-        pyinstaller --name=crs_gui --onefile --windowed main.py
+        pyinstaller --name=myapp --onefile --windowed main.py
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Build standalone binary for Windows
+      run: |
+        pyinstaller --name=myapp --onefile --windowed main.py
       if: matrix.os == 'windows-latest'
 
-    - name: Create zip archive
+    - name: Create zip archive for Ubuntu
       run: |
-        zip -r crs_gui.zip . -i dist
-      if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
+        if [ -d dist ]; then
+          zip -r myapp_ubuntu.zip dist
+        else
+          echo "Error: dist directory not found"
+          exit 1
+        fi
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Create zip archive for Windows
+      run: |
+        if Test-Path dist {
+          Compress-Archive -Path dist -DestinationPath myapp_windows.zip
+        } else {
+          Write-Error "dist folder not found"
+          exit 1
+        }
+      if: matrix.os == 'windows-latest'
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
