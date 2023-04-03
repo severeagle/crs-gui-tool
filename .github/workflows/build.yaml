@@ -44,6 +44,7 @@ jobs:
 
     - name: List directory contents
       run: ls; ls build; ls dist
+      if: matrix.os == 'windows-latest'
     
     - name: Create Release
       id: create_release
@@ -67,7 +68,7 @@ jobs:
         asset_path: dist/crs_transform_linux
         asset_name: crs_transform_linux
         asset_content_type: application/octet-stream
-        if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-latest'
     
 
     - name: Upload Windows Binary
@@ -79,4 +80,4 @@ jobs:
         asset_path: dist/crs_transform_win.exe
         asset_name: crs_transform_win.exe
         asset_content_type: application/octet-stream
-        if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-latest'
