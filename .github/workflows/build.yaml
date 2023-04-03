@@ -30,18 +30,18 @@ jobs:
 
     - name: Build standalone binary for Ubuntu
       run: |
-        pyinstaller --name=myapp --onefile --windowed main.py
+        pyinstaller --name=crs_transform --onefile --windowed main.py
       if: matrix.os == 'ubuntu-latest'
 
     - name: Build standalone binary for Windows
       run: |
-        pyinstaller --name=myapp --onefile --windowed main.py
+        pyinstaller --name=crs_transform --onefile --windowed main.py
       if: matrix.os == 'windows-latest'
 
     - name: Create zip archive for Ubuntu
       run: |
         if [ -d dist ]; then
-          zip -r myapp_ubuntu.zip dist
+          zip -r crs_transform_ubuntu.zip dist
         else
           echo "Error: dist directory not found"
           exit 1
@@ -51,7 +51,7 @@ jobs:
     - name: Create zip archive for Windows
       run: |
         if (Test-Path dist) {
-          Compress-Archive -Path dist -DestinationPath myapp_windows.zip
+          Compress-Archive -Path dist -DestinationPath crs_transform_windows.zip
         } else {
           Write-Error "dist folder not found"
           exit 1
@@ -61,7 +61,20 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: myapp
+        name: crs_transform
         path: |
-          myapp_ubuntu.zip
-          myapp_windows.zip
+          crs_transform_ubuntu.zip
+          crs_transform_windows.zip
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PUB_TOKEN }}
+      with:
+        tag_name: v1.0.0
+        release_name: Release v1.0.0
+        body: |
+          This is the first release of myapp.
+        draft: false
+        prerelease: false
+    
