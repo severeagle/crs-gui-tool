@@ -33,11 +33,12 @@ jobs:
         pyinstaller --name=myapp --onefile --windowed main.py
       if: matrix.os == 'windows-latest'
 
-    - name: Zip standalone binary
-      uses: montudor/action-zip@v0.1.0
-      with:
-        args: 'myapp dist'
-      if: matrix.os == 'windows-latest'
+    - name: Create zip archive
+      run: |
+        cd dist
+        zip -r myapp.zip myapp
+        cd ..
+      if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
@@ -45,5 +46,4 @@ jobs:
         name: myapp
         path: |
           dist/myapp
-          myapp.zip
-      if: matrix.os == 'windows-latest'
+          dist/myapp.zip
