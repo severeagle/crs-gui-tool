@@ -37,6 +37,7 @@ jobs:
       run: |
         pyinstaller --name=crs_transform_win.exe --clean --onefile --windowed main.py
       if: matrix.os == 'windows-latest'
+      shell: powershell
     
     - name: Create Release
       id: create_release
