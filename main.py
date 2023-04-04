@@ -4,7 +4,6 @@ from tkinter import filedialog
 import pandas as pd
 import geopandas as gpd
 import shapely
-from PIL import ImageTk,Image
 
 def transform_data(df,input_cols, output_cols):
     df['coords'] = df.apply(
@@ -22,13 +21,13 @@ def transform_data(df,input_cols, output_cols):
 class CRSTransformApp(tk.Tk):
     def __init__(self) -> None:
         super(CRSTransformApp, self).__init__()
-        self.title("Scrollable Radio Buttons")
+        self.title("CRS Tranformation App")
+        self.configure(bg='#0022C0')
         self.maxsize(500,500)
         self.minsize(500,500)
-        self.iconphoto(False, tk.PhotoImage('reagle.ico'))
-   
+        self.iconphoto(False, tk.PhotoImage('static/Logo1.png'))
 
-        self.upper_frame = tk.Frame(self, bg='red')
+        self.upper_frame = tk.Frame(self)
         filedialog_button = tk.Button(self.upper_frame, text='Select File', command=self.open_file_dialog).pack(side='left')
         header_label = tk.Label(self.upper_frame, text="Header Row:").pack(side='left')
         self.header_value = tk.Entry(self.upper_frame, width=3)
