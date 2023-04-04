@@ -30,12 +30,12 @@ jobs:
 
     - name: Build standalone binary for Ubuntu
       run: |
-        pyinstaller --name=crs_transform_linux --clean --onefile --add-data='static/Logo1.ico:.' --windowed main.py
+        pyinstaller --name=crs_transform_linux --clean --onefile --add-data='static/Logo1.png:.' --windowed main.py
       if: matrix.os == 'ubuntu-latest'
 
     - name: Build standalone binary for Windows
       run: |
-        pyinstaller --name=crs_transform_win --clean --onefile --add-data='static/Logo1.ico;.' --windowed main.py
+        pyinstaller --name=crs_transform_win --clean --onefile --add-data='static/Logo1.png;.' --windowed main.py
       if: matrix.os == 'windows-latest'
       shell: powershell
     
