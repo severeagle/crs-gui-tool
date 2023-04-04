@@ -32,7 +32,7 @@ class CRSTransformApp(tk.Tk):
         filedialog_button = tk.Button(self.upper_frame, text='Select File', command=self.open_file_dialog).pack(side='left')
         header_label = tk.Label(self.upper_frame, text="Header Row:").pack(side='left')
         self.header_value = tk.Entry(self.upper_frame, width=3)
-        self.header_value.insert(0, 1)#.pack(side='left')
+        self.header_value.insert(0, 2)
         self.header_value.pack(side='left')
         self.upper_frame.pack()
 
@@ -67,10 +67,16 @@ class CRSTransformApp(tk.Tk):
 
     def run_pipeline(self):
         try:
+            filename = self.output_filename.get()
+            filetype = self.output_filetype.get()
+            full_filename = filename+'.'+filetype
             geom_cols = [self.check_var_long.get(),self.check_var_lat.get()]
             transform_cols = [x+'_transform' for x in geom_cols]
             gdf = transform_data(self.df,geom_cols,transform_cols)
-            gdf.to_excel("valmis.xlsx", index=False)
+            if filetype in ['xlsx','xls']:
+                gdf.to_excel(full_filename, index=False)
+            else:
+                gdf.to_csv(full_filename, index=False)
             #self.scrollable_frame.delete("all")
         except Exception as e:
             tk.messagebox.showinfo(message=f"Transforming the coordinates failed with exception:\n\t{e}")
