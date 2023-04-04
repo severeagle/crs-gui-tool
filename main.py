@@ -4,7 +4,7 @@ from tkinter import filedialog
 import pandas as pd
 import geopandas as gpd
 import shapely
-
+from PIL import ImageTk,Image
 
 def transform_data(df,input_cols, output_cols):
     df['coords'] = df.apply(
@@ -25,6 +25,8 @@ class CRSTransformApp(tk.Tk):
         self.title("Scrollable Radio Buttons")
         self.maxsize(500,500)
         self.minsize(500,500)
+        self.iconphoto(False, tk.PhotoImage('reagle.ico'))
+   
 
         self.upper_frame = tk.Frame(self, bg='red')
         filedialog_button = tk.Button(self.upper_frame, text='Select File', command=self.open_file_dialog).pack(side='left')
@@ -33,6 +35,21 @@ class CRSTransformApp(tk.Tk):
         self.header_value.insert(0, 1)#.pack(side='left')
         self.header_value.pack(side='left')
         self.upper_frame.pack()
+
+        # Lowerframe
+        self.lower_frame = tk.Frame(self)
+        self.output_filename = tk.Entry(self.lower_frame, width=20)
+        self.output_filename.insert(0, "transformed")
+        self.output_filename.grid(row=0,column=0, columnspan=3)
+        self.run_button = tk.Button(self.lower_frame, text="Run", command=self.run_pipeline, disabledforeground='white')
+        self.run_button.configure(state="disabled")
+        self.run_button.grid(row=0,column=3)
+        self.lower_frame.pack(side='bottom')
+        self.output_filetype=tk.StringVar(value="xlsx")
+        tk.Radiobutton(self.lower_frame, text='xlsx', variable=self.output_filetype,width=3,value='xlsx').grid(row=1,column=0)
+        tk.Radiobutton(self.lower_frame, text='xls', variable=self.output_filetype,width=3,value='xls').grid(row=1,column=1)
+        tk.Radiobutton(self.lower_frame, text='csv', variable=self.output_filetype,width=3,value='csv').grid(row=1,column=2)
+
 
         # Create a canvas and scrollbar
         self.canvas = tk.Canvas(self, width=300, height=200)
@@ -48,13 +65,6 @@ class CRSTransformApp(tk.Tk):
         self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # Lowerframe
-        self.lower_frame = tk.Frame(self, bg='blue', width=100)
-        self.run_button = tk.Button(self.lower_frame, text="Run", command=self.run_pipeline, disabledforeground='white')
-        self.run_button.configure(state="disabled")
-        self.run_button.pack()
-        self.lower_frame.pack(side='bottom')
-
     def run_pipeline(self):
         try:
             geom_cols = [self.check_var_long.get(),self.check_var_lat.get()]
@@ -62,8 +72,8 @@ class CRSTransformApp(tk.Tk):
             gdf = transform_data(self.df,geom_cols,transform_cols)
             gdf.to_excel("valmis.xlsx", index=False)
             #self.scrollable_frame.delete("all")
-        except:
-            tk.messagebox.showinfo(message="Failed, try again...")
+        except Exception as e:
+            tk.messagebox.showinfo(message=f"Transforming the coordinates failed with exception:\n\t{e}")
 
 
         
