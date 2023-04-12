@@ -35,7 +35,7 @@ jobs:
 
     - name: Build standalone binary for Windows
       run: |
-        pyinstaller --name=crs_transform_win --clean --onefile --add-data='.\static\Logo1.png;.' --windowed main.py
+        pyinstaller --name=crs_transform_win --clean --onefile --add-data='./static/Logo1.png;static' --windowed main.py
       if: matrix.os == 'windows-latest'
       shell: powershell
     
