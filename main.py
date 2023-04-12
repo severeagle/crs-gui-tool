@@ -72,11 +72,14 @@ class CRSTransformApp(tk.Tk):
             geom_cols = [self.check_var_long.get(),self.check_var_lat.get()]
             transform_cols = [x+'_transform' for x in geom_cols]
             gdf = transform_data(self.df,geom_cols,transform_cols)
-            if filetype in ['xlsx','xls']:
+            if filetype == 'xlsx':
                 gdf.to_excel(full_filename, index=False)
+            elif filetype == 'xls':
+                writer = pd.ExcelWriter(full_filename, engine='openpyxl')
+                gdf.to_excel(writer, sheet_name='Sheet1')
             else:
                 gdf.to_csv(full_filename, index=False)
-            #self.scrollable_frame.delete("all")
+            tk.messagebox.showinfo(message=f"Succesfully created new file {full_filename}")
         except Exception as e:
             tk.messagebox.showinfo(message=f"Transforming the coordinates failed with exception:\n\t{e}")
 

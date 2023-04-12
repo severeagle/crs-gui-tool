@@ -2,4 +2,5 @@ pandas
 geopandas
 pyinstaller
 xlrd
+openpyxl
 shapely
