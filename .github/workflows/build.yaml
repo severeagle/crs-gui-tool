@@ -32,6 +32,12 @@ jobs:
       run: |
         pyinstaller --name=crs_transform_linux --clean --onefile --add-data='static/Logo1.png:.' --windowed main.py
       if: matrix.os == 'ubuntu-latest'
+      
+    - name: print workdir and stuff (delete this later)
+      run: |
+        pwd
+        ls
+      if: matrix.os == 'windows-latest'
 
     - name: Build standalone binary for Windows
       run: |
