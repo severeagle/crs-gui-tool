@@ -36,7 +36,16 @@ jobs:
     - name: print workdir and stuff (delete this later)
       run: |
         pwd
+      if: matrix.os == 'windows-latest'
+    
+    - name: ls (delete this later)
+      run: |
         ls
+      if: matrix.os == 'windows-latest'
+    
+    - name: ls static (delete this later)
+      run: |
+        ls static
       if: matrix.os == 'windows-latest'
 
     - name: Build standalone binary for Windows
