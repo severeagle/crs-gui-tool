@@ -29,7 +29,7 @@ class CRSTransformApp(tk.Tk):
         self.configure(bg="#0022C0")
         self.maxsize(500, 500)
         self.minsize(500, 500)
-        self.iconphoto(False, tk.PhotoImage(file=os.path.join("static", "Logo1.png")))
+        #self.iconphoto(False, tk.PhotoImage(file=os.path.join("static", "Logo1.png")))
 
         self.upper_frame = tk.Frame(self)
         filedialog_button = tk.Button(
