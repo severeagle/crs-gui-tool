@@ -132,6 +132,8 @@ class CRSTransformApp(tk.Tk):
             crs_from = self.crs_from_value.get()
             crs_to = self.crs_to_value.get()
             full_filename = filename + "." + filetype
+            export_path = os.path.join(self.dir,full_filename)
+            
             geom_cols = [self.check_var_long.get(), self.check_var_lat.get()]
             transform_cols = []
             for i,l in enumerate([self.lon_col_name_value, self.lat_col_name_value]):
@@ -140,16 +142,17 @@ class CRSTransformApp(tk.Tk):
                     transform_cols.append(col_name)
                 else:
                     transform_cols.append(geom_cols[i]+"_transform")
+            
             gdf = transform_data(self.df, geom_cols, transform_cols, crs_from, crs_to)
 
             if filetype == "xlsx":
-                gdf.to_excel(full_filename, index=False)
+                gdf.to_excel(export_path, index=False)
             elif filetype == "xls":
-                writer = pd.ExcelWriter(full_filename, engine="openpyxl")
+                writer = pd.ExcelWriter(export_path, engine="openpyxl")
                 gdf.to_excel(writer, sheet_name="Sheet1")
                 writer.save()
             else:
-                gdf.to_csv(full_filename, index=False)
+                gdf.to_csv(export_path, index=False)
             tk.messagebox.showinfo(
                 message=f"Succesfully created new file {full_filename}"
             )
@@ -161,6 +164,7 @@ class CRSTransformApp(tk.Tk):
     def open_file_dialog(self):
         try:
             filepath = filedialog.askopenfilename()
+            self.dir = os.path.dirname(filepath)
             if len(filepath) == 0:
                 return
             file_extention = filepath.split(".")[-1]
@@ -178,11 +182,13 @@ class CRSTransformApp(tk.Tk):
                 tk.messagebox.showinfo(
                     message=f"Only filetypes: xlsx, xls and csv are allowed."
                 )
+                self.run_button.configure(state="disabled")
                 return
         except Exception as e:
             tk.messagebox.showinfo(
                 message=f"Reading the file failed with exception:\n\t{e}"
             )
+            self.run_button.configure(state="disabled")
             return
         
         self.checks = {}
