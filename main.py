@@ -16,8 +16,8 @@ def transform_data(df, input_cols, output_cols, crs_from, crs_to):
     )
     gdf = gpd.GeoDataFrame(df, geometry="coords").set_crs(crs_from)
     gdf = gdf.to_crs(crs_to)
-    gdf[output_cols[0]] = gdf.geometry.y
-    gdf[output_cols[1]] = gdf.geometry.x
+    gdf[output_cols[0]] = gdf.geometry.x
+    gdf[output_cols[1]] = gdf.geometry.y
     gdf = gdf.drop("coords", axis=1)
     return gdf
 
