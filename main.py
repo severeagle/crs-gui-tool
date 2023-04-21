@@ -133,7 +133,7 @@ class CRSTransformApp(tk.Tk):
             crs_to = self.crs_to_value.get()
             full_filename = filename + "." + filetype
             export_path = os.path.join(self.dir,full_filename)
-            
+
             geom_cols = [self.check_var_long.get(), self.check_var_lat.get()]
             transform_cols = []
             for i,l in enumerate([self.lon_col_name_value, self.lat_col_name_value]):
@@ -194,27 +194,27 @@ class CRSTransformApp(tk.Tk):
         self.checks = {}
         longitude_lab = tk.Label(
             self.scrollable_frame, text="Longitude (E/W)", width=15
-        ).grid(row=0, column=1)
+        ).grid(row=0, column=2)
         latitude_lab = tk.Label(
             self.scrollable_frame, text="Latitude (N/S)", width=15
-        ).grid(row=0, column=2)
+        ).grid(row=0, column=3)
         self.check_var_long = tk.StringVar(value="")
         self.check_var_lat = tk.StringVar(value="")
         for i, col in enumerate(self.df.columns):
-            colname = tk.Label(self.scrollable_frame, text=col, width=15)
-            colname.grid(row=i + 1, column=0)
+            colname = tk.Label(self.scrollable_frame, text=col, width=25)
+            colname.grid(row=i + 1, column=0, columnspan=2)
             longitude = tk.Radiobutton(
                 self.scrollable_frame,
                 variable=self.check_var_long,
                 width=2,
                 value=col,
-            ).grid(row=i + 1, column=1)
+            ).grid(row=i + 1, column=2)
             latitude = tk.Radiobutton(
                 self.scrollable_frame,
                 variable=self.check_var_lat,
                 width=2,
                 value=col,
-            ).grid(row=i + 1, column=2)
+            ).grid(row=i + 1, column=3)
         self.run_button.configure(state="normal")
 
 
